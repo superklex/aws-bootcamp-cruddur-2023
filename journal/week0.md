@@ -66,4 +66,7 @@ Week0 was a good and relatively easy week. It laid the groundwork for the future
 
 That being said, I refuse to give up or get discouraged because I know that character and proper experience are developed by overcoming challenges and tough times.
 
+I wil end with the quote by *Charlie Norman*:
+> it's easy on the good days, but it's really earned on the tough days. Your life and your goals don't care how you feel.
+
 
