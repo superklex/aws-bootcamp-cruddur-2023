@@ -3,7 +3,7 @@
 
 ## Introduction
 
-The program officially kicked on the 11th of February 2023 with a [youtube video](https://www.youtube.com/watch?v=SG8blanhAOg&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=12) where an overview of the proposed cruddur microblogging app was laid down.
+The program officially kicked off on the 11th of February 2023 with a [youtube video](https://www.youtube.com/watch?v=SG8blanhAOg&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=12) where an overview of the proposed cruddur microblogging app was laid down.
 
 Following the official kickoff, a number of homework task were given. Below is my checklist and execution of said tasks
 
@@ -33,5 +33,32 @@ I created a conceptual diagram of the cruddur microblogging application on a [na
 
 Following [Andrew Browns Lucid Chart walkthrough video](https://www.youtube.com/watch?v=K6FDrI_tz0k&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=17) I created a logical Architectural diagram of the cruddur microblogging application in [my Lucid Charts account](https://lucid.app/lucidchart/8433e01a-0ee4-4ffb-be2f-ae881a524bc7/edit?invitationId=inv_da696cf9-dc84-4b71-8b7c-88afdb1979c5) which I uploaded to [my github](https://github.com/superklex/aws-bootcamp-cruddur-2023/blob/week0/journal/myAssets/week0/myCruddurLucidLogicalDiagram.jpeg)
 ![image of logical architectural diagram](/journal/myAssets/week0/myCruddurLucidLogicalDiagram.jpeg)
+
+
+### 5. Create an Admin User
+
+Prior to the kickoff of the program, while going through one of the [prerequisite courses](https://www.youtube.com/watch?v=SOTamWNgDKc), I created a new AWS account and an Admin user
+
+
+### 6. Use Cloud Shell
+
+Folowing [Andrew Brown's afterclass stream](https://www.youtube.com/watch?v=OdUnNuKylHg&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=14), I was able to run the ```aws sts get-caller-identity''' command on the AWS cloudshell
+![AWS Cloudshell image](IMAGE OF CLOUDSHELL USE)
+
+
+### 7. Install AWS CLI
+
+Still Following  [Andrew Brown's afterclass stream](https://www.youtube.com/watch?v=OdUnNuKylHg&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=14) as well as instructions from the [official AWS CLI installation guide](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html#getting-started-install-instructions), I was able to get my AWS CLI working hitchfree
+
+
+### 8. Create a Billing Alarm
+I was able to successfully create a billing alarm using the AWS CLI while following along with [Andrew Brown's video walkthrough](https://www.youtube.com/watch?v=OdUnNuKylHg&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=14)
+[Billing alarm image](image of billing alarm)
+
+### 9. Create a Budget
+I successfully created a budget on my AWS account following the steps outlined by Andrew Brown in [his afterclass video](https://youtu.be/OdUnNuKylHg?list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&t=3868) using the CLI
+
+
+
 
 
