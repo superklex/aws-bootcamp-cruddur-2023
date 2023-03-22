@@ -31,11 +31,11 @@ tracer = trace.get_tracer(__name__)
 
 # Initialize automatic instrumentation with Flask
 # comment app=flask line because it exists already underneath
-# app = Flask(__name__)
+app = Flask(__name__)
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 
-app = Flask(__name__)
+# app = Flask(__name__)
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
 origins = [frontend, backend]
