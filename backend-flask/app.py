@@ -126,7 +126,8 @@ def data_create_message():
 
 @app.route("/api/activities/home", methods=['GET'])
 def data_home():
-    data = HomeActivities.run(logger=LOGGER)
+    data = HomeActivities.run()
+    # add logger=LOGGER as run parameter to enable cloudwatch
     return data, 200
 
 
