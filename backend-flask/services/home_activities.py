@@ -5,8 +5,9 @@ from opentelemetry import trace
 tracer = trace.get_tracer("home.activities")
 
 class HomeActivities:
-  def run(logger):
-    logger.info('HomeActivities')
+  def run():
+    # add loger as a run parameter to implement cloudwatch and uncomment line below
+    # logger.info('HomeActivities')
     with tracer.start_as_current_span("home-activities-mock-data"):
       span = trace.get_current_span()
       now = datetime.now(timezone.utc).astimezone()

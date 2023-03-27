@@ -31,14 +31,16 @@ import watchtower
 import logging
 from time import strftime
 
-# Configuring Logger to Use CloudWatch
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.DEBUG)
-console_handler = logging.StreamHandler()
-cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
-LOGGER.addHandler(console_handler)
-LOGGER.addHandler(cw_handler)
-LOGGER.info("test log")
+# # Configuring Logger to Use CloudWatch
+
+# uncomment to enable cloudwatch logs
+# LOGGER = logging.getLogger(__name__)
+# LOGGER.setLevel(logging.DEBUG)
+# console_handler = logging.StreamHandler()
+# cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
+# LOGGER.addHandler(console_handler)
+# LOGGER.addHandler(cw_handler)
+# LOGGER.info("test log")
 
 # Initialize tracing and an exporter that can send data to Honeycomb
 provider = TracerProvider()
@@ -51,10 +53,11 @@ tracer = trace.get_tracer(__name__)
 # comment app=flask line because it exists already underneath
 app = Flask(__name__)
 
+# uncomment to enable xray
 # xray
-xray_url = os.getenv("AWS_XRAY_URL")
-xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
-XRayMiddleware(app, xray_recorder)
+# xray_url = os.getenv("AWS_XRAY_URL")
+# xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
+# XRayMiddleware(app, xray_recorder)
 
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
@@ -73,13 +76,13 @@ cors = CORS(
 
 # cloudwatch logs
 
-
-@app.after_request
-def after_request(response):
-    timestamp = strftime('[%Y-%b-%d %H:%M]')
-    LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr,
-                 request.method, request.scheme, request.full_path, response.status)
-    return response
+# uncomment to enable xray
+# @app.after_request
+# def after_request(response):
+#     timestamp = strftime('[%Y-%b-%d %H:%M]')
+#     LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr,
+#                  request.method, request.scheme, request.full_path, response.status)
+#     return response
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
@@ -123,7 +126,8 @@ def data_create_message():
 
 @app.route("/api/activities/home", methods=['GET'])
 def data_home():
-    data = HomeActivities.run(logger=LOGGER)
+    data = HomeActivities.run()
+    # add logger=LOGGER as run parameter to enable cloudwatch
     return data, 200
 
 
