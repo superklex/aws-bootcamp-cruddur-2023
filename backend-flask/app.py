@@ -14,6 +14,7 @@ from services.messages import *
 from services.create_message import *
 from services.show_activity import *
 
+from lib.cognito_jwt_token import CognitoJwtToken, extract_access_token, TokenVerifyError
 # honeycomb OTel
 from opentelemetry import trace
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
@@ -56,7 +57,11 @@ tracer = trace.get_tracer(__name__)
 # Initialize automatic instrumentation with Flask
 # comment app=flask line because it exists already underneath
 app = Flask(__name__)
-
+cognito__jwt_token = CognitoJwtToken(
+    user_pool_id=os.getenv('AWS_COGNITO-USER_POOL_ID'),
+    user_pool_client_id=os.getenv('AWS_COGNITO-USER_POOL_CLIENT_ID'),
+    region=os.getenv('AWS_DEFAULT_REGION')
+)
 # uncomment to enable xray
 # xray
 xray_url = os.getenv("AWS_XRAY_URL")
@@ -87,17 +92,26 @@ def init_rollbar():
     got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
 
 # app = Flask(__name__)
+
+
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
 origins = [frontend, backend]
+# cors = CORS(
+#     app,
+#     resources={r"/api/*": {"origins": origins}},
+#     expose_headers="location,link",
+#     allow_headers="content-type,if-modified-since",
+#     methods="OPTIONS,GET,HEAD,POST"
+# )
+
 cors = CORS(
     app,
     resources={r"/api/*": {"origins": origins}},
-    expose_headers="location,link",
-    allow_headers="content-type,if-modified-since",
+    headers=['Content-Type', 'Authorization'],
+    expose_headers='Authorization',
     methods="OPTIONS,GET,HEAD,POST"
 )
-
 # cloudwatch logs
 
 # uncomment to enable xray
@@ -115,6 +129,7 @@ cors = CORS(
 def rollbar_test():
     rollbar.report_message('Hello World!', 'warning')
     return "Hello World!"
+
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
@@ -159,7 +174,23 @@ def data_create_message():
 @app.route("/api/activities/home", methods=['GET'])
 @xray_recorder.capture('activities_home')
 def data_home():
-    data = HomeActivities.run()
+    app.logger.debug(request.headers)
+    access_token = extract_access_token(request.headers)
+    try:
+        claims = cognito__jwt_token.verify(access_token)
+
+        # authenticated request
+        app.logger.debug('authenticated')
+        app.logger.debug(claims)
+        app.logger.debug(claims['username'])
+        data = HomeActivities.run(cognito_user_id =claims['username'])
+    except TokenVerifyError as e:
+        _ = request.data
+
+        # unauthenticated request
+        app.logger.debug('unauthenticated')
+        data = HomeActivities.run()
+
     # add logger=LOGGER as run parameter to enable cloudwatch
     return data, 200
 
